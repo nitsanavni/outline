@@ -55,13 +55,16 @@ class Outline:
             # Add the file path to the outline with a high score
             # assuming file paths have a score of 100
             position = len(self.outline)
-            self.outline.append((filename, 100, position))
+            self.outline.append((filename, 100, position, ""))
+            line_number = 0   # Initialize line_number
             # print(f"{filename}:")
             for line in file:
+                line_number += 1  # Increment line_number
                 line = line.decode('utf8', 'ignore').strip('\n')
                 position = len(self.outline)
                 # print(f"{line}:{self.score_line(line)}")
-                self.outline.append((line, self.score_line(line), position))
+                self.outline.append(
+                    (line, self.score_line(line), position, line_number))
 
     def score_line(self, line):
         score = 0
@@ -83,8 +86,8 @@ class Outline:
         summary.sort(key=lambda x: x[2])
 
         # Format output
-        for line, score, position in summary:
-            print(f"Score: {score} Line: {line}")
+        for line, score, position, line_number in summary:
+            print(f"{line_number}:{line}")
 
 
 if __name__ == "__main__":
