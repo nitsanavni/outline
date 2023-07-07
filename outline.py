@@ -4,12 +4,14 @@ import re
 
 
 class Outline:
-    def __init__(self, root_node='.', max_lines=10):
-        self.root_node = root_node
-        self.max_lines = max_lines
-        self.scores = {'class': 3, 'def': 2, '__init__': 1,
-                       '__main__': 1, 'if': 1, 'else': 1, 'elif': 1, 'for': 1, 'with': 1, 'return': 1}
+    def __init__(self, root_nodes=['.'], max_lines=10):
+        self.root_nodes = root_nodes
         self.outline = []
+        self.scores = {'class': 3, 'def': 2, '__init__': 1, '__main__': 1,
+                       'if': 1, 'else': 1, 'elif': 1, 'for': 1, 'with': 1, 'return': 1}
+        lines_per_root_node = max_lines // len(root_nodes)
+        self.max_lines = lines_per_root_node if (
+            lines_per_root_node != 0) else max_lines
 
     def traverse(self, node=None):
         if not node:
@@ -74,32 +76,29 @@ class Outline:
         return score
 
     def summarize(self):
-        self.traverse()
+        for root_node in self.root_nodes:
+            self.outline = []
+            self.root_node = root_node
+            self.traverse()
 
-        # Sort outline by scores in descending order
-        self.outline.sort(key=lambda x: -x[1])
+            self.outline.sort(key=lambda x: -x[1])
+            summary = self.outline[:self.max_lines]
+            summary.sort(key=lambda x: x[2])
 
-        # Select max_lines highest scored lines
-        summary = self.outline[:self.max_lines]
-
-        # this doesn't seem to sort by 'position'
-        summary.sort(key=lambda x: x[2])
-
-        # Format output
-        for line, score, position, line_number in summary:
-            print(f"{line_number}:{line}")
+            for line, score, position, line_number in summary:
+                print(f"{line_number}:{line}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Generate codebase summary with Outline.')
 
-    parser.add_argument('-r', '--root', nargs='+', default='.',
+    parser.add_argument('-r', '--root', nargs='+', default=['.'],
                         help='The root directories to summarize. Default is the current directory.')
     parser.add_argument('-l', '--lines', type=int, default=10,
                         help='The maximum number of output lines. Default is 10.')
 
     args = parser.parse_args()
 
-    outline = Outline(root_node=args.root, max_lines=args.lines)
+    outline = Outline(root_nodes=args.root, max_lines=args.lines)
     outline.summarize()
