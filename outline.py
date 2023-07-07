@@ -46,12 +46,14 @@ class Outline:
         with open(filename, 'rb') as file:
             # Add the file path to the outline with a high score
             # assuming file paths have a score of 100
-            self.outline.append((filename, 100))
+            position = len(self.outline)
+            self.outline.append((filename, 100, position))
             # print(f"{filename}:")
             for line in file:
                 line = line.decode('utf8', 'ignore')
+                position = len(self.outline)
                 # print(f"{line}:{self.score_line(line)}")
-                self.outline.append((line, self.score_line(line)))
+                self.outline.append((line, self.score_line(line), position))
 
     def score_line(self, line):
         score = 0
@@ -69,8 +71,11 @@ class Outline:
         # Select max_lines highest scored lines
         summary = self.outline[:self.max_lines]
 
+        # this doesn't seem to sort by 'position'
+        summary.sort(key=lambda x: x[2])
+
         # Format output
-        for line, score in summary:
+        for line, score, position in summary:
             print(f"Score: {score} Line: {line}")
 
 
