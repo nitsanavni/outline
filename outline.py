@@ -1,3 +1,4 @@
+import argparse
 import os
 import re
 
@@ -80,5 +81,15 @@ class Outline:
 
 
 if __name__ == "__main__":
-    outline = Outline()
+    parser = argparse.ArgumentParser(
+        description='Generate codebase summary with Outline.')
+
+    parser.add_argument('-r', '--root', nargs='+', default='.',
+                        help='The root directories to summarize. Default is the current directory.')
+    parser.add_argument('-l', '--lines', type=int, default=10,
+                        help='The maximum number of output lines. Default is 10.')
+
+    args = parser.parse_args()
+
+    outline = Outline(root_node=args.root, max_lines=args.lines)
     outline.summarize()
