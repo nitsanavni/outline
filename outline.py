@@ -44,6 +44,9 @@ class Outline:
 
     def parse_file(self, filename):
         with open(filename, 'rb') as file:
+            # Add the file path to the outline with a high score
+            # assuming file paths have a score of 100
+            self.outline.append((filename, 100))
             # print(f"{filename}:")
             for line in file:
                 line = line.decode('utf8', 'ignore')
