@@ -1,0 +1,4 @@
+-   [initial conversation with chat gpt](https://chat.openai.com/share/9390b11a-1e71-4821-9fd0-714da658f139)
+-   install Aider
+-   a chat script
+-   multi roots - each gets equal real estate in the output
