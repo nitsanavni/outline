@@ -7,25 +7,32 @@ class Outline:
     def __init__(self, root_node='.', max_lines=10):
         self.root_node = root_node
         self.max_lines = max_lines
-        self.scores = {'class': 1, 'def': 1, '__init__': 1}
+        self.scores = {'class': 3, 'def': 2, '__init__': 1,
+                       '__main__': 1, 'if': 1, 'else': 1, 'elif': 1, 'for': 1, 'with': 1, 'return': 1}
         self.outline = []
 
     def traverse(self, node=None):
         if not node:
             node = self.root_node
-        if os.path.isdir(node):
-            for dirpath, dirnames, files in os.walk(node):
-                # Remove hidden files and directories
-                files = [f for f in files if not f[0] == '.']
-                dirnames[:] = [d for d in dirnames if not d[0] == '.']
-
-                for name in files:
-                    if not self.is_binary(f"{dirpath}/{name}"):
-                        self.parse_file(os.path.join(dirpath, name))
-        elif os.path.isfile(node):
-            self.parse_file(node)
+        if isinstance(node, list):
+            # If node is a list (occurs when multiple root directories passed in)
+            # apply traverse function to each directory in the list
+            for n in node:
+                self.traverse(n)
         else:
-            print(f"Path '{node}' does not exist.")
+            if os.path.isdir(node):
+                for dirpath, dirnames, files in os.walk(node):
+                    # Remove hidden files and directories
+                    files = [f for f in files if not f[0] == '.']
+                    dirnames[:] = [d for d in dirnames if not d[0] == '.']
+
+                    for name in files:
+                        if not self.is_binary(f"{dirpath}/{name}"):
+                            self.parse_file(os.path.join(dirpath, name))
+            elif os.path.isfile(node):
+                self.parse_file(node)
+            else:
+                print(f"Path '{node}' does not exist.")
 
     def is_binary(self, filename):
         """
@@ -51,7 +58,7 @@ class Outline:
             self.outline.append((filename, 100, position))
             # print(f"{filename}:")
             for line in file:
-                line = line.decode('utf8', 'ignore')
+                line = line.decode('utf8', 'ignore').strip('\n')
                 position = len(self.outline)
                 # print(f"{line}:{self.score_line(line)}")
                 self.outline.append((line, self.score_line(line), position))
