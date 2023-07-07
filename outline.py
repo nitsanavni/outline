@@ -7,6 +7,7 @@ class Outline:
         self.root_node = root_node
         self.max_lines = max_lines
         self.scores = {'class': 1, 'def': 1, '__init__': 1}
+        self.outline = []
 
     def traverse(self, node=None):
         if not node:
@@ -43,10 +44,11 @@ class Outline:
 
     def parse_file(self, filename):
         with open(filename, 'rb') as file:
-            print(f"{filename}:")
+            # print(f"{filename}:")
             for line in file:
                 line = line.decode('utf8', 'ignore')
-                print(f"{line}:{self.score_line(line)}")
+                # print(f"{line}:{self.score_line(line)}")
+                self.outline.append((line, self.score_line(line)))
 
     def score_line(self, line):
         score = 0
@@ -57,7 +59,16 @@ class Outline:
 
     def summarize(self):
         self.traverse()
-        # TODO: limit and format output here
+
+        # Sort outline by scores in descending order
+        self.outline.sort(key=lambda x: -x[1])
+
+        # Select max_lines highest scored lines
+        summary = self.outline[:self.max_lines]
+
+        # Format output
+        for line, score in summary:
+            print(f"Score: {score} Line: {line}")
 
 
 if __name__ == "__main__":
