@@ -57,7 +57,7 @@ class Outline:
                 self.outline.append((filename, 100, len(self.outline), ""))
                 for line_number, line in enumerate(file, 1):
                     stripped_line = line.strip("\n")
-                    score = self.score_line(stripped_line)
+                    score = self.score_line(line)
                     self.outline.append(
                         (stripped_line, score, len(self.outline), line_number)
                     )
@@ -66,6 +66,9 @@ class Outline:
 
     def score_line(self, line):
         score = 0
+        indentation_level = len(line) - len(line.lstrip())
+        score -= indentation_level
+
         for keyword, value in self.scores.items():
             if re.search(r"\b" + keyword + r"\b", line):
                 score += value
