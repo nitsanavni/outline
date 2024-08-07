@@ -4,10 +4,10 @@ import re
 
 # Top-level dictionary for scoring
 SCORING = {
-    "class": 3,
-    "def": 2,
+    "class": 5,
+    "def": 4,
+    "__main__": 3,
     "__init__": 1,
-    "__main__": 1,
     "if": 1,
     "else": 1,
     "elif": 1,
@@ -68,7 +68,7 @@ class Outline:
 
     def score_line(self, line):
         score = 0
-        indentation_level = len(line) - len(line.lstrip())
+        indentation_level = (len(line) - len(line.lstrip())) / 4
         score -= indentation_level
 
         for keyword, value in self.scores.items():
@@ -87,7 +87,7 @@ class Outline:
             summary.sort(key=lambda x: x[2])
 
             for line, score, position, line_number in summary:
-                print(f"{line_number}:{line}")
+                print(f"{line_number}:\t{line}")
 
 
 if __name__ == "__main__":
