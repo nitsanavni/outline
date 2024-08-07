@@ -1,0 +1,17 @@
+:	outline.py
+1:	import argparse
+2:	import os
+3:	import re
+6:	# Top-level dictionary for scoring
+8:	    "class": 5,
+9:	    "def": 4,
+10:	    "__main__": 3,
+20:	# Define a named tuple for outline entries
+24:	class Outline:
+25:	    def __init__(self, root_nodes=["."], max_lines=10, scoring=None):
+31:	    def traverse(self, node=None):
+51:	    def is_binary(self, filename):
+58:	    def parse_file(self, filename):
+75:	    def score_line(self, line):
+85:	    def summarize(self):
+99:	if __name__ == "__main__":

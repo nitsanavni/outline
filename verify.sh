@@ -1,4 +1,4 @@
-#!/bin/bash -i
+#!/bin/bash
 
 default_diff_tool="code --diff"
 diff_tool=$default_diff_tool
