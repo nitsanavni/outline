@@ -1,0 +1,8 @@
+:	./LICENSE
+:	./README.md
+:	./idiff.sh
+:	./chat.py
+:	./outline.py
+:	./outline-plan.md
+:	./plan.md
+:	./test.sh
