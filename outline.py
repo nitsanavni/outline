@@ -57,6 +57,8 @@ class Outline:
                 self.outline.append((filename, 100, len(self.outline), ""))
                 for line_number, line in enumerate(file, 1):
                     stripped_line = line.strip("\n")
+                    if not stripped_line.strip():  # Skip empty lines
+                        continue
                     score = self.score_line(line)
                     self.outline.append(
                         (stripped_line, score, len(self.outline), line_number)
