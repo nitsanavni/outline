@@ -1,8 +1,7 @@
 :	./self.approved
 :	./LICENSE
+:	./test_chat.sh
 :	./README.md
 :	./idiff.sh
 :	./chat.py
 :	./outline.py
-:	./outline-plan.md
-:	./py.approved

@@ -17,6 +17,6 @@ function scrub {
     eval "$cmd"
 }
 
-outline | scrub no_args regex_scores | test no_args
+outline | scrub no_args regex_scores cache | test no_args
 outline -r outline.py -l 19 | test self
 outline -r *.py -l 14 | test py

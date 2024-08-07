@@ -3,15 +3,15 @@
 2:	import argparse
 3:	import requests
 4:	import os
-7:	def chat_with_gpt4(text):
-8:	    api_key = os.getenv("OPENAI_API_KEY")
-9:	    if not api_key:
-11:	    url = "https://api.openai.com/v1/chat/completions"
-28:	    if response.status_code == 200:
-30:	    else:
-36:	def main():
-38:	    parser.add_argument("text", help="The text to be used as prompt for GPT-4.")
-44:	if __name__ == "__main__":
+5:	import json
+7:	CACHE_FILE = "chat_cache.json"
+10:	def read_cache():
+18:	def write_cache(cache):
+19:	    with open(CACHE_FILE, "w") as f:
+23:	def chat_with_gpt4(text, use_cache=True):
+24:	    if use_cache:
+61:	def main():
+79:	if __name__ == "__main__":
 :	outline.py
 6:	# Top-level dictionary for scoring
 8:	    "class": 5,
