@@ -10,11 +10,10 @@ function test {
 
 function scrub {
     local patterns=("$@")
-    local cmd
+    local cmd="cat"
     for pattern in "${patterns[@]}"; do
         cmd="$cmd | grep -v '$pattern'"
     done
-    cmd="${cmd:3}" # Remove the initial ' | ' from the command string
     eval "$cmd"
 }
 
