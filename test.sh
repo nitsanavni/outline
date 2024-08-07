@@ -9,10 +9,15 @@ function test {
 }
 
 function scrub {
-    grep -v "$1"
+    local patterns=("$@")
+    local cmd
+    for pattern in "${patterns[@]}"; do
+        cmd="$cmd | grep -v '$pattern'"
+    done
+    cmd="${cmd:3}" # Remove the initial ' | ' from the command string
+    eval "$cmd"
 }
 
-outline | scrub no_args | scrub regex_scores | test no_args
-# TODO: support multiple scrubbed patterns: outline | scrub no_args regex_scores | test no_args
+outline | scrub no_args regex_scores | test no_args
 outline -r outline.py -l 19 | test self
 outline -r *.py -l 14 | test py
