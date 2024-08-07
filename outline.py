@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+from collections import namedtuple
 
 # Top-level dictionary for scoring
 SCORING = {
@@ -15,6 +16,9 @@ SCORING = {
     "with": 1,
     "return": 1,
 }
+
+# Define a named tuple for outline entries
+OutlineEntry = namedtuple("OutlineEntry", ["line", "score", "position", "line_number"])
 
 
 class Outline:
@@ -54,14 +58,16 @@ class Outline:
     def parse_file(self, filename):
         try:
             with open(filename, "r", encoding="utf8", errors="ignore") as file:
-                self.outline.append((filename, 100, len(self.outline), ""))
+                self.outline.append(OutlineEntry(filename, 100, len(self.outline), ""))
                 for line_number, line in enumerate(file, 1):
                     stripped_line = line.strip("\n")
                     if not stripped_line.strip():  # Skip empty lines
                         continue
                     score = self.score_line(line)
                     self.outline.append(
-                        (stripped_line, score, len(self.outline), line_number)
+                        OutlineEntry(
+                            stripped_line, score, len(self.outline), line_number
+                        )
                     )
         except Exception as e:
             print(f"Error reading file {filename}: {e}")
@@ -82,12 +88,12 @@ class Outline:
             self.root_node = root_node
             self.traverse()
 
-            self.outline.sort(key=lambda x: -x[1])
+            self.outline.sort(key=lambda x: -x.score)
             summary = self.outline[: self.max_lines]
-            summary.sort(key=lambda x: x[2])
+            summary.sort(key=lambda x: x.position)
 
-            for line, score, position, line_number in summary:
-                print(f"{line_number}:\t{line}")
+            for entry in summary:
+                print(f"{entry.line_number}:\t{entry.line}")
 
 
 if __name__ == "__main__":
