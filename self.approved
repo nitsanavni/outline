@@ -2,7 +2,9 @@
 1:	import argparse
 2:	import os
 3:	import re
+4:	from collections import namedtuple
 6:	# Top-level dictionary for scoring
+7:	SCORING = {
 8:	    "class": 5,
 9:	    "def": 4,
 10:	    "__main__": 3,

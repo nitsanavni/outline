@@ -7,18 +7,12 @@
 8:	    api_key = os.getenv("OPENAI_API_KEY")
 9:	    if not api_key:
 12:	    url = "https://api.openai.com/v1/chat/completions"
-13:	    headers = {
-16:	    }
-17:	    data = {
 23:	    if response.status_code == 200:
 25:	    else:
 30:	def main():
 36:	    # Please replace 'your-api-key' with your actual OpenAI GPT-4 API Key
 41:	if __name__ == "__main__":
 :	outline.py
-1:	import argparse
-2:	import os
-3:	import re
 6:	# Top-level dictionary for scoring
 8:	    "class": 5,
 9:	    "def": 4,

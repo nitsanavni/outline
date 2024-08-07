@@ -1,3 +1,4 @@
+:	./py.received
 :	./self.approved
 :	./LICENSE
 :	./README.md
@@ -5,4 +6,3 @@
 :	./chat.py
 :	./outline.py
 :	./outline-plan.md
-:	./py.approved

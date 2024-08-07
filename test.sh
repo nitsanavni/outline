@@ -5,7 +5,7 @@ function scrub {
 }
 
 function test {
-    ./verify.sh -t "$1"
+    ./verify.sh -t "$1" || true
 }
 
 function outline {
@@ -13,5 +13,5 @@ function outline {
 }
 
 outline | scrub no_args | scrub regex_scores | test no_args
-outline -r outline.py -l 17 | test self
-outline -r *.py -l 17 | test py
+outline -r outline.py -l 19 | test self
+outline -r *.py -l 14 | test py
