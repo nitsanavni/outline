@@ -1,4 +1,4 @@
 starts_on_line: 2  
 ends_on_line: 2  
-starts_with_str: "Hello"  
-ends_with_str: "world!"
+starts_with_str: Hello  
+ends_with_str: world!
