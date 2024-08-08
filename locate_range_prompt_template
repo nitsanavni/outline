@@ -1,27 +1,16 @@
-locate the char range of ${thing_to_locate}
+locate the char range of:
+${thing_to_locate}
 
-format:
-starts_on_line:
-ends_on_line:
-starts_with_str:
-ends_with_str:
-
-example:
+follow this example:
 code:
 \t1\tprint(\"Hello, world!\")
 thing to locate:
 the hello world string
-response:
+
 starts_on_line: 1
 ends_on_line: 1
 starts_with_str: \"Hello
 ends_with_str: world!\"
-
-note:
-- start and end lines are inclusive, and could be the same
-- strs should full words if possible, at least 4 chars long
-- don't quote the strings
-- no trailing spaces
 
 code:
 ${code}
