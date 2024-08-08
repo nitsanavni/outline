@@ -1,0 +1,7 @@
+     1	def greet():
+     2	    print("Hello, world!")
+     3	    print("Welcome to the refactoring example.")
+     4	    print("This is a simple Python script.")
+     5	
+     6	
+     7	greet()
