@@ -1,2 +1,4 @@
 *.received
 *cache*
+.ropeproject
+*.refactored*
