@@ -1,3 +1,8 @@
+# change one thing gpt
+
+- given a file and a change to make, output the changed code
+- from there we could wrap in a loop, showing diffs, running tests, approve, commit,
+
 - look into rope codeassist
 - extract variable cli: support defining the range with `starts_on_line: int` + `starts_with: str`, `ends_on_line: int` + `ends_with: str`
   - add line numbers to the code given to the LLM
