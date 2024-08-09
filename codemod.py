@@ -19,13 +19,19 @@ def call_openai_api(prompt):
 
 
 def extract_code_block(text):
-    code_block_start = text.find("```")
-    code_block_end = text.rfind("```")
+    lines = text.splitlines()
+    in_code_block = False
+    code_lines = []
 
-    if code_block_start != -1 and code_block_end != -1:
-        return text[code_block_start + 3 : code_block_end].strip()
-    else:
-        return None
+    for line in lines:
+        if "```" in line:
+            if in_code_block:
+                break
+            in_code_block = True
+        elif in_code_block:
+            code_lines.append(line)
+
+    return "\n".join(code_lines)
 
 
 def main():
@@ -41,6 +47,7 @@ def main():
 
     prompt = f"""
     I need you to modify the following code according to the instructions below. 
+    Write the whole code again with the modifications.
     Instructions: {change_to_make}
 
     Code:
