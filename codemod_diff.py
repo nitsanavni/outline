@@ -45,7 +45,7 @@ def main():
             try:
                 shutil.copyfile(tmp_modified.name, original_file)
 
-                subprocess.run(test_cmd, shell=True, check=True)
+                subprocess.run(test_cmd, shell=True, check=False)
             finally:
                 shutil.copyfile(backup_file.name, original_file)
                 backup_file.close()

@@ -1,6 +1,14 @@
 import subprocess
 
 
+def select_file_using_fzf():
+    try:
+        selected_item = subprocess.check_output(["fzf"], text=True).strip()
+        return selected_item
+    except subprocess.CalledProcessError:
+        return None
+
+
 def prompt_user(current_values):
     """
     Prompt the user to modify any of the arguments. The default is modifying the 'change' argument.
@@ -14,14 +22,17 @@ def prompt_user(current_values):
 
     choice = (
         input(
-            "Which argument do you want to change? (file/change/test or press Enter to modify 'change'): "
+            "Which argument do you want to change? (file/change/test or type 'quit' to exit, or press Enter to modify 'change'): "
         )
         .strip()
         .lower()
     )
 
-    if choice == "file":
-        current_values["file"] = input("Enter new file path: ").strip()
+    if choice == "quit":
+        print("Exiting the program...")
+        exit(0)
+    elif choice == "file":
+        current_values["file"] = select_file_using_fzf()
     elif choice == "change":
         current_values["change"] = input("Enter new change: ").strip()
     elif choice == "test":
@@ -29,7 +40,8 @@ def prompt_user(current_values):
             "Enter new test command (or leave blank to skip testing): "
         ).strip()
     else:
-        current_values["change"] = input("Enter new change: ").strip()
+        # Assume the input is the new value for 'change' if it's anything else
+        current_values["change"] = choice
 
     return current_values
 
@@ -56,24 +68,24 @@ def execute_script(current_values):
 def main():
     # Initial state of the arguments
     current_values = {
-        "file": input("Enter initial file path: ").strip(),
+        "file": None,
         "change": input("Enter initial change: ").strip(),
         "test": input(
             "Enter initial test command (or leave blank to skip testing): "
         ).strip(),
     }
 
-    while True:
-        # Prompt the user to modify arguments if needed
-        current_values = prompt_user(current_values)
+    current_values["file"] = select_file_using_fzf()
 
-        # Execute the wrapped script with the current arguments
+    # Execute the script with initial values right after gathering them
+    execute_script(current_values)
+
+    while True:
+        # Execute the script with current values
         execute_script(current_values)
 
-        # Ask if the user wants to make another change or exit
-        cont = input("\nDo you want to make another change? (y/n): ").strip().lower()
-        if cont != "y":
-            break
+        # Prompt the user to modify arguments after executing
+        current_values = prompt_user(current_values)
 
 
 if __name__ == "__main__":
