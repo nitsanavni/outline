@@ -1,6 +1,9 @@
+- look into rope codeassist
 - extract variable cli: support defining the range with `starts_on_line: int` + `starts_with: str`, `ends_on_line: int` + `ends_with: str`
   - add line numbers to the code given to the LLM
   - is it convenient for the LLM?
+    - get gilded rose in here
+  - maybe llms prefer writing regexes
 - user request -> user shown a diff to approve with test results
 - register a test
 - replace vs. refactor
