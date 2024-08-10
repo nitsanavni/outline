@@ -9,16 +9,18 @@ def select_file_using_fzf():
         return None
 
 
-def prompt_user(current_values):
+def prompt_user(args):
     """
     Prompt the user to modify any of the arguments. The default is modifying the 'change' argument.
     """
+
+    if not args["file"]:
+        args["file"] = select_file_using_fzf()
+
     print("\nCurrent values:")
-    print(f"  File:   {current_values['file']}")
-    print(f"  Change: {current_values['change']}")
-    print(
-        f"  Test:   {current_values['test'] if current_values['test'] else 'No test command'}\n"
-    )
+    print(f"  File:   {args['file']}")
+    print(f"  Change: {args['change']}")
+    print(f"  Test:   {args['test'] if args['test'] else 'No test command'}\n")
 
     choice = (
         input(
@@ -32,18 +34,18 @@ def prompt_user(current_values):
         print("Exiting the program...")
         exit(0)
     elif choice == "file":
-        current_values["file"] = select_file_using_fzf()
+        args["file"] = select_file_using_fzf()
     elif choice == "change":
-        current_values["change"] = input("Enter new change: ").strip()
+        args["change"] = input("Enter new change: ").strip()
     elif choice == "test":
-        current_values["test"] = input(
+        args["test"] = input(
             "Enter new test command (or leave blank to skip testing): "
         ).strip()
     else:
         # Assume the input is the new value for 'change' if it's anything else
-        current_values["change"] = choice
+        args["change"] = choice
 
-    return current_values
+    return args
 
 
 def execute_script(current_values):
@@ -66,26 +68,18 @@ def execute_script(current_values):
 
 
 def main():
-    # Initial state of the arguments
-    current_values = {
-        "file": None,
-        "change": input("Enter initial change: ").strip(),
-        "test": input(
-            "Enter initial test command (or leave blank to skip testing): "
-        ).strip(),
-    }
-
-    current_values["file"] = select_file_using_fzf()
-
-    # Execute the script with initial values right after gathering them
-    execute_script(current_values)
+    args = prompt_user(
+        {
+            "file": None,
+            "change": None,
+            "test": None,
+        }
+    )
 
     while True:
-        # Execute the script with current values
-        execute_script(current_values)
+        execute_script(args)
 
-        # Prompt the user to modify arguments after executing
-        current_values = prompt_user(current_values)
+        args = prompt_user(args)
 
 
 if __name__ == "__main__":
