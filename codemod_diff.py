@@ -41,6 +41,9 @@ def main():
         with open(tmp_modified.name, "w") as f:
             f.write(new_code)
 
+        # Print the path to the temporary modified file for approval
+        print(f"Temporary modified file created at: {tmp_modified.name}")
+
         if test_cmd:
             backup_file = tempfile.NamedTemporaryFile(delete=False)
             shutil.copyfile(original_file, backup_file.name)
