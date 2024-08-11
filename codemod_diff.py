@@ -3,6 +3,9 @@ import subprocess
 import shutil
 import os
 
+# todos
+# - pass '--approve' to approve previous change
+
 
 def apply_change(original_file, change):
     new_code = subprocess.check_output(["python", "codemod.py", original_file, change])

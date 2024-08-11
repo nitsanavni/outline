@@ -1,6 +1,13 @@
 import subprocess
 
 
+# todos
+# - hit 't' to run tests
+# - hit 'q' to quit
+# - hit 'a' to approve the last change - copy to
+# - add 'custom instructions' - additional instructions to add before each change request
+
+
 def select_file_using_fzf():
     try:
         selected_item = subprocess.check_output(["fzf"], text=True).strip()
