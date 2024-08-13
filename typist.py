@@ -1,68 +1,41 @@
 import subprocess
-import re
 import shutil
-import os
 import sys
 
+import state
 from code_change_workflow import execute_code_change_workflow
-
-# Directory to store state files
-STATE_DIR = ".typist"
-
-
-def ensure_state_dir():
-    if not os.path.exists(STATE_DIR):
-        os.makedirs(STATE_DIR)
-
-
-def write_state(filename, content):
-    with open(os.path.join(STATE_DIR, filename), "w") as f:
-        f.write(content)
-
-
-def read_state(filename):
-    filepath = os.path.join(STATE_DIR, filename)
-    if os.path.exists(filepath):
-        with open(filepath, "r") as f:
-            return f.read().strip()
-    return None
-
-
-def append_to_state(filename, content):
-    with open(os.path.join(STATE_DIR, filename), "a") as f:
-        f.write(content + "\n")
 
 
 def select_file():
     try:
         selected_item = subprocess.check_output(["fzf"], text=True).strip()
-        write_state("selected_file", selected_item)
+        state.set("selected_file", selected_item)
         # Reset change and test when selecting a new file
-        write_state("change", "")
-        write_state("test_command", "")
-        write_state("custom_instructions", "")
+        state.set("change", "")
+        state.set("test_command", "")
+        state.set("custom_instructions", "")
         print(f"Selected file: {selected_item}")
     except subprocess.CalledProcessError:
         print("File selection canceled.")
 
 
 def apply_change(change):
-    if not read_state("selected_file"):
+    if not state.get("selected_file"):
         print("No file selected. Use 'file' to choose a file first.")
         return
-    write_state("change", change)
-    append_to_state("change_requests", change)
+    state.set("change", change)
+    state.append("change_requests", change)
     print(f"Change applied: {change}")
     perform_code_change()
 
 
 def set_test_command(test_command):
-    write_state("test_command", test_command)
+    state.set("test_command", test_command)
     print(f"Test command set: {test_command}")
 
 
 def run_test():
-    test_command = read_state("test_command")
+    test_command = state.get("test_command")
     if not test_command:
         print("No test command set. Use 'test' to set a test command first.")
         return
@@ -75,12 +48,12 @@ def run_test():
 
 
 def set_custom_instructions(instructions):
-    write_state("custom_instructions", instructions)
+    state.set("custom_instructions", instructions)
     print(f"Custom instructions set: {instructions}")
 
 
 def retry_last_change():
-    last_change = read_state("change_requests").strip().split("\n")[-1]
+    last_change = state.get("change_requests").strip().split("\n")[-1]
     if last_change:
         apply_change(last_change)
         print(f"Retrying last change: {last_change}")
@@ -89,8 +62,8 @@ def retry_last_change():
 
 
 def approve_changes():
-    selected_file = read_state("selected_file")
-    temp_file_path = read_state("temp_file_path")
+    selected_file = state.get("selected_file")
+    temp_file_path = state.get("temp_file_path")
     if selected_file and temp_file_path:
         shutil.copy(temp_file_path, selected_file)
         print(f"Approved changes copied to: {selected_file}")
@@ -99,26 +72,26 @@ def approve_changes():
 
 
 def set_formatter_command(formatter_command):
-    write_state("formatter_command", formatter_command)
+    state.set("formatter_command", formatter_command)
     print(f"Formatter command set: {formatter_command}")
 
 
 def perform_code_change():
-    selected_file = read_state("selected_file")
-    change = read_state("change")
-    custom_instructions = read_state("custom_instructions")
+    selected_file = state.get("selected_file")
+    change = state.get("change")
+    custom_instructions = state.get("custom_instructions")
 
     if not selected_file or not change:
         print("No file or change to execute. Aborting.")
         return
 
-    format_cmd = read_state("formatter_command") or None
+    format_cmd = state.get("formatter_command") or None
 
     change_request = (
         custom_instructions + "\n" + change if custom_instructions else change
     )
 
-    test_cmd = read_state("test_command") or None
+    test_cmd = state.get("test_command") or None
 
     temp_file_path = execute_code_change_workflow(
         target_file=selected_file,
@@ -128,19 +101,19 @@ def perform_code_change():
     )
 
     if temp_file_path:
-        write_state("temp_file_path", temp_file_path)
+        state.set("temp_file_path", temp_file_path)
 
 
 def display_status():
-    print(f"  File:                {read_state('selected_file') or 'None'}")
-    print(f"  Change:              {read_state('change') or 'None'}")
-    print(f"  Custom Instructions: {read_state('custom_instructions') or 'None'}")
-    print(f"  Test:                {read_state('test_command') or 'None'}")
-    print(f"  Format:              {read_state('formatter_command') or 'None'}")
+    print(f"  File:                {state.get('selected_file') or 'None'}")
+    print(f"  Change:              {state.get('change') or 'None'}")
+    print(f"  Custom Instructions: {state.get('custom_instructions') or 'None'}")
+    print(f"  Test:                {state.get('test_command') or 'None'}")
+    print(f"  Format:              {state.get('formatter_command') or 'None'}")
 
 
 def main():
-    ensure_state_dir()
+    state.init()
 
     if len(sys.argv) < 2:
         print("Usage: python your_script.py [command] [options]")
