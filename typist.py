@@ -96,6 +96,11 @@ def approve_changes():
         print("Error: Missing selected file or temporary file path.")
 
 
+def set_formatter_command(formatter_command):
+    write_state("formatter_command", formatter_command)
+    print(f"Formatter command set: {formatter_command}")
+
+
 def execute_script():
     selected_file = read_state("selected_file")
     change = read_state("change")
@@ -104,6 +109,13 @@ def execute_script():
     if not selected_file or not change:
         print("No file or change to execute. Aborting.")
         return
+
+    # Run formatter if set
+    formatter_command = read_state("formatter_command")
+    if formatter_command:
+        format_cmd = f"{formatter_command} {selected_file}"
+        print(f"Running formatter command: {format_cmd}")
+        subprocess.run(format_cmd, shell=True)
 
     change_command = (
         custom_instructions + "\n" + change if custom_instructions else change
@@ -147,18 +159,11 @@ def parse_temp_file_path(stdout):
 
 
 def display_status():
-    selected_file = read_state("selected_file")
-    change = read_state("change")
-    test_command = read_state("test_command")
-    custom_instructions = read_state("custom_instructions")
-
-    print("\nCurrent State:")
-    print(f"  File:                {selected_file if selected_file else 'None'}")
-    print(f"  Change:              {change if change else 'None'}")
-    print(f"  Test Command:        {test_command if test_command else 'None'}")
-    print(
-        f"  Custom Instructions: {custom_instructions if custom_instructions else 'None'}\n"
-    )
+    print(f"  File:                {read_state('selected_file') or 'None'}")
+    print(f"  Change:              {read_state('change') or 'None'}")
+    print(f"  Custom Instructions: {read_state('custom_instructions') or 'None'}")
+    print(f"  Test:                {read_state('test_command') or 'None'}")
+    print(f"  Format:              {read_state('formatter_command') or 'None'}")
 
 
 def main():
@@ -186,10 +191,12 @@ def main():
         approve_changes()
     elif command in ["status", "st"]:
         display_status()
+    elif command in ["format", "fmt"] and len(sys.argv) > 2:
+        set_formatter_command(" ".join(sys.argv[2:]))
     else:
         print(f"Unknown command: {command}")
         print(
-            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st)"
+            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st), format (fmt)"
         )
 
 
