@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import tempfile
 
-from codemod import prompt_for_change_and_extract_code
+from prompt_llm_for_code_change import prompt_for_change_and_extract_code
 
 
 def format_code(file, formatter):
