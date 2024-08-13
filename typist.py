@@ -34,33 +34,33 @@ def append_to_state(filename, content):
 def select_file():
     try:
         selected_item = subprocess.check_output(["fzf"], text=True).strip()
-        write_state("selected_file.txt", selected_item)
+        write_state("selected_file", selected_item)
         # Reset change and test when selecting a new file
-        write_state("change.txt", "")
-        write_state("test_command.txt", "")
-        write_state("custom_instructions.txt", "")
+        write_state("change", "")
+        write_state("test_command", "")
+        write_state("custom_instructions", "")
         print(f"Selected file: {selected_item}")
     except subprocess.CalledProcessError:
         print("File selection canceled.")
 
 
 def apply_change(change):
-    if not read_state("selected_file.txt"):
+    if not read_state("selected_file"):
         print("No file selected. Use 'file' to choose a file first.")
         return
-    write_state("change.txt", change)
-    append_to_state("change_requests.txt", change)
+    write_state("change", change)
+    append_to_state("change_requests", change)
     print(f"Change applied: {change}")
     execute_script()
 
 
 def set_test_command(test_command):
-    write_state("test_command.txt", test_command)
+    write_state("test_command", test_command)
     print(f"Test command set: {test_command}")
 
 
 def run_test():
-    test_command = read_state("test_command.txt")
+    test_command = read_state("test_command")
     if not test_command:
         print("No test command set. Use 'test' to set a test command first.")
         return
@@ -73,12 +73,12 @@ def run_test():
 
 
 def set_custom_instructions(instructions):
-    write_state("custom_instructions.txt", instructions)
+    write_state("custom_instructions", instructions)
     print(f"Custom instructions set: {instructions}")
 
 
 def retry_last_change():
-    last_change = read_state("change_requests.txt").strip().split("\n")[-1]
+    last_change = read_state("change_requests").strip().split("\n")[-1]
     if last_change:
         apply_change(last_change)
         print(f"Retrying last change: {last_change}")
@@ -87,8 +87,8 @@ def retry_last_change():
 
 
 def approve_changes():
-    selected_file = read_state("selected_file.txt")
-    temp_file_path = read_state("temp_file_path.txt")
+    selected_file = read_state("selected_file")
+    temp_file_path = read_state("temp_file_path")
     if selected_file and temp_file_path:
         shutil.copy(temp_file_path, selected_file)
         print(f"Approved changes copied to: {selected_file}")
@@ -97,9 +97,9 @@ def approve_changes():
 
 
 def execute_script():
-    selected_file = read_state("selected_file.txt")
-    change = read_state("change.txt")
-    custom_instructions = read_state("custom_instructions.txt")
+    selected_file = read_state("selected_file")
+    change = read_state("change")
+    custom_instructions = read_state("custom_instructions")
 
     if not selected_file or not change:
         print("No file or change to execute. Aborting.")
@@ -118,7 +118,7 @@ def execute_script():
         change_command,
     ]
 
-    test_command = read_state("test_command.txt")
+    test_command = read_state("test_command")
     if test_command:
         command.extend(["--test", test_command])
 
@@ -134,7 +134,7 @@ def execute_script():
 
     temp_file_path = parse_temp_file_path(result.stdout)
     if temp_file_path:
-        write_state("temp_file_path.txt", temp_file_path)
+        write_state("temp_file_path", temp_file_path)
         print(f"Temporary modified file created at: {temp_file_path}")
 
 
@@ -147,10 +147,10 @@ def parse_temp_file_path(stdout):
 
 
 def display_status():
-    selected_file = read_state("selected_file.txt")
-    change = read_state("change.txt")
-    test_command = read_state("test_command.txt")
-    custom_instructions = read_state("custom_instructions.txt")
+    selected_file = read_state("selected_file")
+    change = read_state("change")
+    test_command = read_state("test_command")
+    custom_instructions = read_state("custom_instructions")
 
     print("\nCurrent State:")
     print(f"  File:                {selected_file if selected_file else 'None'}")
