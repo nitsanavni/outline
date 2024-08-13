@@ -16,14 +16,15 @@ from state import (
 from code_change_workflow import execute_code_change_workflow
 
 
+def select_file_with_fzf():
+    return subprocess.check_output(["fzf"], text=True).strip()
+
+
 def select_file():
-    try:
-        selected_file.set(subprocess.check_output(["fzf"], text=True).strip())
-        code_change.clear()
-        test_command.clear()
-        format_command.clear()
-    except subprocess.CalledProcessError:
-        print("File selection canceled.")
+    selected_file.set(select_file_with_fzf())
+    code_change.clear()
+    test_command.clear()
+    format_command.clear()
 
 
 def apply_change(change):
