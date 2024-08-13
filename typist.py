@@ -46,19 +46,25 @@ def select_file():
 
 def apply_change(change):
     if not read_state("selected_file.txt"):
-        print("No file selected. Use 'select' to choose a file first.")
+        print("No file selected. Use 'file' to choose a file first.")
         return
     write_state("change.txt", change)
     append_to_state("change_requests.txt", change)
     print(f"Change applied: {change}")
+    execute_script()
 
 
-def run_test(test_command):
-    if not read_state("selected_file.txt"):
-        print("No file selected. Use 'select' to choose a file first.")
-        return
+def set_test_command(test_command):
     write_state("test_command.txt", test_command)
     print(f"Test command set: {test_command}")
+
+
+def run_test():
+    test_command = read_state("test_command.txt")
+    if not test_command:
+        print("No test command set. Use 'test' to set a test command first.")
+        return
+    print(f"Running test command: {test_command}")
     result = subprocess.run(test_command, shell=True, capture_output=True, text=True)
     print("\nTest Output (stdout):")
     print(result.stdout)
@@ -164,24 +170,26 @@ def main():
 
     command = sys.argv[1]
 
-    if command == "select":
+    if command in ["file", "f"]:
         select_file()
-    elif command == "change" and len(sys.argv) > 2:
+    elif command in ["change", "c"] and len(sys.argv) > 2:
         apply_change(" ".join(sys.argv[2:]))
     elif command == "test" and len(sys.argv) > 2:
-        run_test(" ".join(sys.argv[2:]))
-    elif command == "instructions" and len(sys.argv) > 2:
+        set_test_command(" ".join(sys.argv[2:]))
+    elif command == "run_test":
+        run_test()
+    elif command in ["instructions", "i"] and len(sys.argv) > 2:
         set_custom_instructions(" ".join(sys.argv[2:]))
-    elif command == "retry":
+    elif command in ["retry", "r"]:
         retry_last_change()
-    elif command == "approve":
+    elif command in ["approve", "a"]:
         approve_changes()
-    elif command == "status":
+    elif command in ["status", "st"]:
         display_status()
     else:
         print(f"Unknown command: {command}")
         print(
-            "Available commands: select, change, test, instructions, retry, approve, status"
+            "Available commands: file (f), change (c), test, run_test, instructions (i), retry (r), approve (a), status (st)"
         )
 
 

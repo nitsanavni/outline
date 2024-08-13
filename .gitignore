@@ -3,3 +3,4 @@
 .ropeproject
 *.refactored*
 *.changed*
+.typist
