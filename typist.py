@@ -96,11 +96,26 @@ def display_status():
             print(f"{s.display_name}: {s.get()}")
 
 
+def print_usage():
+    print("Usage: python typist.py [command] [options]")
+    print("Commands:")
+    print("  file (f): Select a file to work on.")
+    print("  change (c): Apply a change to the selected file.")
+    print("  test_cmd (tc): Set the test command.")
+    print("  run_test (run): Run the test command.")
+    print("  instructions (i): Set custom instructions for the change.")
+    print("  retry (r): Retry the last change.")
+    print("  approve (a): Approve the changes.")
+    print("  status (st): Display the current status.")
+    print("  format (fmt): Set the formatter command.")
+    print("  diff_cmd (diff): Set the diff command.")
+
+
 def main():
     state.init()
 
     if len(sys.argv) < 2:
-        print("Usage: python your_script.py [command] [options]")
+        print_usage()
         return
 
     command = sys.argv[1]
@@ -127,9 +142,7 @@ def main():
         diff_command.set(" ".join(sys.argv[2:]))
     else:
         print(f"Unknown command: {command}")
-        print(
-            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st), format (fmt), diff_cmd (diff)"
-        )
+        print_usage()
 
 
 if __name__ == "__main__":
