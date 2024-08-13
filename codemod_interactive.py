@@ -2,8 +2,6 @@ import subprocess
 import re
 import shutil
 
-# TODO
-# - vars should be multi-line, especially the custom instructions - mayeb in files
 
 # Initialize a list to keep track of change requests
 change_requests = []
