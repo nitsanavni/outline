@@ -4,6 +4,8 @@ import shutil
 import os
 import sys
 
+from code_change_workflow import execute_code_change_workflow
+
 # Directory to store state files
 STATE_DIR = ".typist"
 
@@ -51,7 +53,7 @@ def apply_change(change):
     write_state("change", change)
     append_to_state("change_requests", change)
     print(f"Change applied: {change}")
-    execute_script()
+    perform_code_change()
 
 
 def set_test_command(test_command):
@@ -101,7 +103,7 @@ def set_formatter_command(formatter_command):
     print(f"Formatter command set: {formatter_command}")
 
 
-def execute_script():
+def perform_code_change():
     selected_file = read_state("selected_file")
     change = read_state("change")
     custom_instructions = read_state("custom_instructions")
@@ -110,52 +112,23 @@ def execute_script():
         print("No file or change to execute. Aborting.")
         return
 
-    # Run formatter if set
-    formatter_command = read_state("formatter_command")
-    if formatter_command:
-        format_cmd = f"{formatter_command} {selected_file}"
-        print(f"Running formatter command: {format_cmd}")
-        subprocess.run(format_cmd, shell=True)
+    format_cmd = read_state("formatter_command") or None
 
-    change_command = (
+    change_request = (
         custom_instructions + "\n" + change if custom_instructions else change
     )
 
-    command = [
-        "python",
-        "type.py",
-        "--file",
-        selected_file,
-        "--change",
-        change_command,
-    ]
+    test_cmd = read_state("test_command") or None
 
-    test_command = read_state("test_command")
-    if test_command:
-        command.extend(["--test", test_command])
+    temp_file_path = execute_code_change_workflow(
+        target_file=selected_file,
+        code_change=change_request,
+        test_cmd=test_cmd,
+        format_cmd=format_cmd,
+    )
 
-    print("\nExecuting command: " + " ".join(command))
-
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    print("\nOutput (stdout):")
-    print(result.stdout)
-
-    print("\nOutput (stderr):")
-    print(result.stderr)
-
-    temp_file_path = parse_temp_file_path(result.stdout)
     if temp_file_path:
         write_state("temp_file_path", temp_file_path)
-        print(f"Temporary modified file created at: {temp_file_path}")
-
-
-def parse_temp_file_path(stdout):
-    pattern = r"temporary modified file created at: (.+)"
-    match = re.search(pattern, stdout, re.IGNORECASE)
-    if match:
-        return match.group(1)
-    return None
 
 
 def display_status():

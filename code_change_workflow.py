@@ -68,9 +68,6 @@ def execute_code_change_workflow(
         if format_cmd:
             format_code(tmp_modified.name, format_cmd)
 
-        # Print the path to the temporary modified file for approval
-        print(f"Temporary modified file created at: {tmp_modified.name}")
-
         if test_cmd:
             backup_file = create_backup(target_file)
 
@@ -85,6 +82,8 @@ def execute_code_change_workflow(
         show_diff(tmp_modified.name, target_file, diff_cmd)
 
         os.remove(tmp_original.name)
+
+        return tmp_modified.name
 
 
 def main():
@@ -105,13 +104,15 @@ def main():
 
     args = parser.parse_args()
 
-    execute_code_change_workflow(
+    tmp_modified = execute_code_change_workflow(
         target_file=args.file,
         code_change=args.change,
         test_cmd=args.test,
         format_cmd=args.format,
         diff_cmd=args.diff,
     )
+
+    print(f"Modified code saved to: {tmp_modified}")
 
 
 if __name__ == "__main__":
