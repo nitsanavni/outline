@@ -11,6 +11,7 @@ from state import (
     format_command,
     change_requests,
     temp_file_path,
+    diff_command,
 )
 from code_change_workflow import execute_code_change_workflow
 
@@ -62,10 +63,6 @@ def approve_changes():
         print("Error: Missing selected file or temporary file path.")
 
 
-def set_formatter_command(formatter_command):
-    format_command.set(formatter_command)
-
-
 def perform_code_change():
     if not selected_file.get() or not code_change.get():
         print("No file or change to execute. Aborting.")
@@ -81,6 +78,7 @@ def perform_code_change():
             code_change=change_request,
             test_cmd=test_command.get(),
             format_cmd=format_command.get(),
+            diff_cmd=diff_command.get(),
         )
     )
 
@@ -119,11 +117,13 @@ def main():
     elif command in ["status", "st"]:
         display_status()
     elif command in ["format", "fmt"] and len(sys.argv) > 2:
-        set_formatter_command(" ".join(sys.argv[2:]))
+        format_command.set(" ".join(sys.argv[2:]))
+    elif command in ["diff_cmd", "diff"] and len(sys.argv) > 2:
+        diff_command.set(" ".join(sys.argv[2:]))
     else:
         print(f"Unknown command: {command}")
         print(
-            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st), format (fmt)"
+            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st), format (fmt), diff_cmd (diff)"
         )
 
 
