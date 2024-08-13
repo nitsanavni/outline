@@ -39,7 +39,7 @@ def restore_from_backup(backup_file, original_file):
     backup_file.close()
 
 
-def execute_change_workflow(
+def execute_code_change_workflow(
     target_file, code_change, test_cmd=None, format_cmd=None, diff_cmd=None
 ):
     """
@@ -105,7 +105,7 @@ def main():
 
     args = parser.parse_args()
 
-    execute_change_workflow(
+    execute_code_change_workflow(
         target_file=args.file,
         code_change=args.change,
         test_cmd=args.test,
