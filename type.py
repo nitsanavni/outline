@@ -1,15 +1,16 @@
-import tempfile
-import subprocess
-import shutil
 import os
-
-# todos
-# - pass '--approve' to approve previous change
+import shutil
+import subprocess
+import tempfile
 
 
 def apply_change(original_file, change):
     new_code = subprocess.check_output(["python", "codemod.py", original_file, change])
     return new_code.decode("utf-8")
+
+
+def format_code(file, formatter):
+    subprocess.run(formatter.split() + [file], check=True)
 
 
 def show_diff(file1, file2):
@@ -25,12 +26,16 @@ def main():
     parser.add_argument("--file", required=True, help="File to modify")
     parser.add_argument("--change", required=True, help="Change to apply")
     parser.add_argument("--test", help="Test command to run after applying the change")
+    parser.add_argument(
+        "--format", help="Code formatter command to run on the modified file"
+    )
 
     args = parser.parse_args()
 
     original_file = args.file
     change = args.change
     test_cmd = args.test
+    formatter = args.format
 
     with tempfile.NamedTemporaryFile(
         delete=False
@@ -40,6 +45,9 @@ def main():
         new_code = apply_change(original_file, change)
         with open(tmp_modified.name, "w") as f:
             f.write(new_code)
+
+        if formatter:
+            format_code(tmp_modified.name, formatter)
 
         # Print the path to the temporary modified file for approval
         print(f"Temporary modified file created at: {tmp_modified.name}")
