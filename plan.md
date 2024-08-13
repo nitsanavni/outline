@@ -5,6 +5,7 @@ Core
 - Move state to files
   - Files go under '.typist'
 - Move out of internal prompt loop to cli commands
+- register an auto-formatter
 
 Functionality
 

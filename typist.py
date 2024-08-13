@@ -174,9 +174,9 @@ def main():
         select_file()
     elif command in ["change", "c"] and len(sys.argv) > 2:
         apply_change(" ".join(sys.argv[2:]))
-    elif command == "test" and len(sys.argv) > 2:
+    elif command in ["set_test_command", "test_cmd", "cmd", "tc"] and len(sys.argv) > 2:
         set_test_command(" ".join(sys.argv[2:]))
-    elif command == "run_test":
+    elif command in ["run_test", "run"]:
         run_test()
     elif command in ["instructions", "i"] and len(sys.argv) > 2:
         set_custom_instructions(" ".join(sys.argv[2:]))
@@ -189,7 +189,7 @@ def main():
     else:
         print(f"Unknown command: {command}")
         print(
-            "Available commands: file (f), change (c), test, run_test, instructions (i), retry (r), approve (a), status (st)"
+            "Available commands: file (f), change (c), test_cmd (tc), run_test (run), instructions (i), retry (r), approve (a), status (st)"
         )
 
 
