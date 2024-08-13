@@ -2,6 +2,8 @@
 
 Core
 
+- akchualy doing the diff should be done by typist.py, not by type.py
+
 Functionality
 
 - run the tests after approval
