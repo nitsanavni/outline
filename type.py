@@ -13,8 +13,13 @@ def format_code(file, formatter):
     subprocess.run(formatter.split() + [file], check=True)
 
 
-def show_diff(file1, file2):
-    subprocess.run(["code", "--diff", file1, file2])
+def show_diff(file1, file2, diff_cmd=None):
+    if diff_cmd:
+        # Replace placeholders in the diff command with the file paths
+        diff_cmd = diff_cmd.replace("{file1}", file1).replace("{file2}", file2)
+        subprocess.run(diff_cmd, shell=True)
+    else:
+        subprocess.run(["code", "--diff", file1, file2])
 
 
 def main():
@@ -29,6 +34,9 @@ def main():
     parser.add_argument(
         "--format", help="Code formatter command to run on the modified file"
     )
+    parser.add_argument(
+        "--diff", help="Custom diff command to compare the original and modified files"
+    )
 
     args = parser.parse_args()
 
@@ -36,6 +44,7 @@ def main():
     change = args.change
     test_cmd = args.test
     formatter = args.format
+    diff_cmd = args.diff
 
     with tempfile.NamedTemporaryFile(
         delete=False
@@ -64,7 +73,7 @@ def main():
                 shutil.copyfile(backup_file.name, original_file)
                 backup_file.close()
 
-        show_diff(tmp_modified.name, original_file)
+        show_diff(tmp_modified.name, original_file, diff_cmd)
 
         os.remove(tmp_original.name)
 

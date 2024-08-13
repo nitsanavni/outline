@@ -2,19 +2,13 @@
 
 Core
 
-- Move state to files
-  - Files go under '.typist'
-- Move out of internal prompt loop to cli commands
-- register an auto-formatter
-
 Functionality
 
+- run the tests after approval
 - "try harder" / "h" - use gpt-4o
-- allow running the tests anytime
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
   - wrapper could be simple template or could be llm'ed
-- run the tests after approval
 
 UI
 
@@ -33,8 +27,6 @@ Context Management
 - `@file#O20` - outlined file, numbers of lines is 20
 - vars should be multi-line, especially the custom instructions - mayeb in files
   - use a better prompt, see ideas in `prompt.py`
-
-Rebrand to Typist
 
 Find a nice cli diff tool
 
