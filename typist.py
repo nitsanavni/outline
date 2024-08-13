@@ -38,7 +38,6 @@ def apply_change(change):
 
 def run_test():
     if not test_command.get():
-        print("No test command set. Use 'test' to set a test command first.")
         return
     result = subprocess.run(
         test_command.get(), shell=True, capture_output=True, text=True
@@ -135,6 +134,7 @@ def main():
         retry_last_change()
     elif command in ["approve", "a"]:
         approve_changes()
+        run_test()
     elif command in ["status", "st"]:
         display_status()
     elif command in ["format", "fmt"] and len(sys.argv) > 2:
