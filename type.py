@@ -24,13 +24,13 @@ def save(to_file, content):
         f.write(content)
 
 
-def make_backup(file):
+def create_backup(file):
     backup_file = tempfile.NamedTemporaryFile(delete=False)
     shutil.copyfile(src=file, dst=backup_file.name)
     return backup_file
 
 
-def run_test(test_cmd):
+def execute_test(test_cmd):
     subprocess.run(test_cmd, shell=True, check=False)
 
 
@@ -39,8 +39,8 @@ def restore_from_backup(backup_file, original_file):
     backup_file.close()
 
 
-def change_workflow(
-    original_file, change, test_cmd=None, formatter=None, diff_cmd=None
+def execute_change_workflow(
+    target_file, code_change, test_cmd=None, format_cmd=None, diff_cmd=None
 ):
     """
     the workflow:
@@ -57,32 +57,32 @@ def change_workflow(
     with tempfile.NamedTemporaryFile(
         delete=False
     ) as tmp_original, tempfile.NamedTemporaryFile(delete=False) as tmp_modified:
-        shutil.copyfile(original_file, tmp_original.name)
+        shutil.copyfile(target_file, tmp_original.name)
 
         new_code = prompt_for_change_and_extract_code(
-            file_to_change=tmp_original.name, change_to_make=change
+            file_to_change=tmp_original.name, change_to_make=code_change
         )
 
         save(tmp_modified.name, new_code)
 
-        if formatter:
-            format_code(tmp_modified.name, formatter)
+        if format_cmd:
+            format_code(tmp_modified.name, format_cmd)
 
         # Print the path to the temporary modified file for approval
         print(f"Temporary modified file created at: {tmp_modified.name}")
 
         if test_cmd:
-            backup_file = make_backup(original_file)
+            backup_file = create_backup(target_file)
 
             try:
                 # Modify the original file with the new code
-                shutil.copyfile(tmp_modified.name, original_file)
+                shutil.copyfile(tmp_modified.name, target_file)
 
-                run_test(test_cmd)
+                execute_test(test_cmd)
             finally:
-                restore_from_backup(backup_file, original_file)
+                restore_from_backup(backup_file, target_file)
 
-        show_diff(tmp_modified.name, original_file, diff_cmd)
+        show_diff(tmp_modified.name, target_file, diff_cmd)
 
         os.remove(tmp_original.name)
 
@@ -105,11 +105,11 @@ def main():
 
     args = parser.parse_args()
 
-    change_workflow(
-        original_file=args.file,
-        change=args.change,
+    execute_change_workflow(
+        target_file=args.file,
+        code_change=args.change,
         test_cmd=args.test,
-        formatter=args.format,
+        format_cmd=args.format,
         diff_cmd=args.diff,
     )
 
