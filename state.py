@@ -32,8 +32,9 @@ def append(filename, content):
 
 
 class Thing:
-    def __init__(self, name):
+    def __init__(self, name, display_name=None):
         self.name = name
+        self.display_name = display_name or name
 
     def get(self):
         return get(self.name)
@@ -48,11 +49,11 @@ class Thing:
         append(self.name, content)
 
 
-selected_file = Thing("selected_file")
-code_change = Thing("change")
-custom_instructions = Thing("custom_instructions")
-test_command = Thing("test_command")
-format_command = Thing("formatter_command")
+selected_file = Thing("selected_file", "File")
+code_change = Thing("change", "Last Change")
+custom_instructions = Thing("custom_instructions", "Custom Instructions")
+test_command = Thing("test_command", "Test")
+format_command = Thing("formatter_command", "Format")
+diff_command = Thing("diff_command", "Diff")
 change_requests = Thing("change_requests")
 temp_file_path = Thing("temp_file_path")
-diff_command = Thing("diff_command")

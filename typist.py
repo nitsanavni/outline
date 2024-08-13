@@ -84,11 +84,16 @@ def perform_code_change():
 
 
 def display_status():
-    print(f"  File:                {selected_file.get() or 'None'}")
-    print(f"  Change:              {code_change.get() or 'None'}")
-    print(f"  Custom Instructions: {custom_instructions.get() or 'None'}")
-    print(f"  Test:                {test_command.get() or 'None'}")
-    print(f"  Format:              {format_command.get() or 'None'}")
+    for s in [
+        selected_file,
+        code_change,
+        custom_instructions,
+        test_command,
+        format_command,
+        diff_command,
+    ]:
+        if s.get():
+            print(f"{s.display_name}: {s.get()}")
 
 
 def main():
