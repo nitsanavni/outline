@@ -111,7 +111,7 @@ def execute_script():
 
     command = [
         "python",
-        "codemod_diff.py",
+        "type.py",
         "--file",
         selected_file,
         "--change",
