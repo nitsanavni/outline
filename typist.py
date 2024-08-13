@@ -17,14 +17,17 @@ from code_change_workflow import execute_code_change_workflow
 
 
 def select_file_with_fzf():
-    return subprocess.check_output(["fzf"], text=True).strip()
+    try:
+        return subprocess.check_output(["fzf"], text=True).strip()
+    except subprocess.CalledProcessError:
+        return None
 
 
 def select_file():
-    selected_file.set(select_file_with_fzf())
-    code_change.clear()
-    test_command.clear()
-    format_command.clear()
+    file_selected = select_file_with_fzf()
+    if file_selected is not None:
+        selected_file.set(file_selected)
+        code_change.clear()
 
 
 def apply_change(change):

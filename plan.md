@@ -4,7 +4,6 @@ Core
 
 Functionality
 
-- run the tests after approval
 - "try harder" / "h" - use gpt-4o
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
