@@ -82,7 +82,8 @@ class Outline:
                 score += value
         return score
 
-    def summarize(self):
+    def summary(self):
+        result = []
         for root_node in self.root_nodes:
             self.outline = []
             self.root_node = root_node
@@ -92,8 +93,14 @@ class Outline:
             summary = self.outline[: self.max_lines]
             summary.sort(key=lambda x: x.position)
 
-            for entry in summary:
-                print(f"{entry.line_number}:\t{entry.line}")
+            result.append(
+                "\n".join([f"{entry.line_number}:\t{entry.line}" for entry in summary])
+            )
+
+        return "\n".join(result)
+
+    def summarize(self):
+        print(self.summary())
 
 
 if __name__ == "__main__":

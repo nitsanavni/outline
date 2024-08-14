@@ -13,6 +13,8 @@ Functionality
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
   - wrapper could be simple template or could be llm'ed
+- fzf assisted outline, previews, when changing the num of lines
+  `seq 100 | fzf --preview 'python outline.py -r *.py -l {}'`
 
 UI
 

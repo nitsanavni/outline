@@ -2,15 +2,24 @@ import re
 import sys
 from pathlib import Path
 
+from outline import Outline
+
 
 def expand_file_references(change_request):
     # Improved regex pattern
-    file_and_line_range_pattern = re.compile(r"@(\S+?)(?::(\d+)(?:-(\d+))?)?(?=\s|$)")
+    file_and_line_range_pattern = re.compile(
+        r"@(\S+?)(?::(\d+)(?:-(\d+))?)?(?=\s|$)|(\S+#O)"
+    )
 
     def file_and_line_range_replace_match(match):
         file_name = match.group(1)
         start_line = match.group(2)
         end_line = match.group(3)
+
+        if "#O" in file_name:  # Check for outline references
+            outline_filename = file_name[:-2]  # remove #O
+            outline = Outline(root_nodes=[outline_filename])
+            return outline.summary()
 
         # Check if the file exists
         file_path = Path(file_name)
