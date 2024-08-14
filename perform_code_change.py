@@ -11,23 +11,40 @@ from state import (
 )
 
 
-def perform_code_change(change):
+def update_and_load_state(change):
     target_file = selected_file.get()
     if not target_file:
         print("No file selected. Use 'file' to choose a file first.")
-        return
+        return None, None, None, None, None
 
     code_change.set(change)
     change_requests.append(change)
 
     change_request = "\n".join([s for s in [custom_instructions.get(), change] if s])
 
-    temp_file_path.set(
-        execute_code_change_workflow(
-            target_file=target_file,
-            code_change=change_request,
-            test_cmd=test_command.get(),
-            format_cmd=format_command.get(),
-            diff_cmd=diff_command.get(),
-        )
+    return (
+        target_file,
+        change_request,
+        test_command.get(),
+        format_command.get(),
+        diff_command.get(),
     )
+
+
+def perform_code_change(change):
+    target_file, change_request, test_cmd, format_cmd, diff_cmd = update_and_load_state(
+        change
+    )
+
+    if not target_file:
+        return
+
+    temp_file = execute_code_change_workflow(
+        target_file=target_file,
+        code_change=change_request,
+        test_cmd=test_cmd,
+        format_cmd=format_cmd,
+        diff_cmd=diff_cmd,
+    )
+
+    temp_file_path.set(temp_file)
