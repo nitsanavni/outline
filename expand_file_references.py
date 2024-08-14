@@ -5,9 +5,9 @@ from pathlib import Path
 
 def expand_file_references(change_request):
     # Improved regex pattern
-    pattern = re.compile(r"@(\S+?)(?::(\d+)(?:-(\d+))?)?(?=\s|$)")
+    file_and_line_range_pattern = re.compile(r"@(\S+?)(?::(\d+)(?:-(\d+))?)?(?=\s|$)")
 
-    def replace_match(match):
+    def file_and_line_range_replace_match(match):
         file_name = match.group(1)
         start_line = match.group(2)
         end_line = match.group(3)
@@ -40,7 +40,9 @@ def expand_file_references(change_request):
         return header + content
 
     # Replace all occurrences of the pattern
-    expanded_change_request = pattern.sub(replace_match, change_request)
+    expanded_change_request = file_and_line_range_pattern.sub(
+        file_and_line_range_replace_match, change_request
+    )
 
     return expanded_change_request
 
