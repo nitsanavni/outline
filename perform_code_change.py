@@ -11,11 +11,16 @@ from state import (
 )
 
 
+class FileSelectionError(Exception):
+    """Custom exception for file selection errors."""
+
+    pass
+
+
 def update_and_load_state(change):
     target_file = selected_file.get()
     if not target_file:
-        print("No file selected. Use 'file' to choose a file first.")
-        return None, None, None, None, None
+        raise FileSelectionError("No file selected. Use 'file' to choose a file first.")
 
     code_change.set(change)
     change_requests.append(change)
@@ -32,11 +37,12 @@ def update_and_load_state(change):
 
 
 def perform_code_change(change):
-    target_file, change_request, test_cmd, format_cmd, diff_cmd = update_and_load_state(
-        change
-    )
-
-    if not target_file:
+    try:
+        target_file, change_request, test_cmd, format_cmd, diff_cmd = (
+            update_and_load_state(change)
+        )
+    except FileSelectionError as e:
+        print(e)
         return
 
     temp_file = execute_code_change_workflow(
