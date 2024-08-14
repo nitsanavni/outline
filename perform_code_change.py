@@ -1,4 +1,5 @@
 from code_change_workflow import execute_code_change_workflow
+from expand_file_references import expand_file_references
 from state import (
     change_requests,
     code_change,
@@ -14,20 +15,6 @@ from state import (
 class FileSelectionError(Exception):
     """Custom exception for file selection errors."""
 
-    pass
-
-
-def expand_file_references(change_request):
-    """
-    Expands file references in the change request.
-    Example format:
-    @file
-    @file:4
-    @file:5-7
-    """
-    # Implementation for expanding file references goes here.
-    return change_request  # Placeholder return
-
 
 def update_and_load_state(change):
     target_file = selected_file.get()
@@ -38,7 +25,7 @@ def update_and_load_state(change):
     change_requests.append(change)
 
     # Construct the change request string
-    change_request = "\n".join([s for s in [custom_instructions.get(), change] if s])
+    change_request = "\n".join(filter(None, [custom_instructions.get(), change]))
 
     # Expand references in the change request
     change_request = expand_file_references(change_request)

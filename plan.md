@@ -23,6 +23,7 @@ UI
 
 Context Management
 
+- `@test` - include test results
 - file ref: `@file#L3-14`
   - `@` - trigger `fzf`
   - `#L` - select line range
