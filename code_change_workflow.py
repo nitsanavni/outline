@@ -42,18 +42,6 @@ def restore_from_backup(backup_file, original_file):
 def execute_code_change_workflow(
     target_file, code_change, test_cmd=None, format_cmd=None, diff_cmd=None
 ):
-    """
-    the workflow:
-    1. get new code by prompting llm -> save to a temp file
-    2. optional: format the new code using provided cmd
-    3. optional: run test cmd
-    3.1. backup the original file
-    3.2. modify the original file with the new code
-    3.3. run the test command
-    3.4. restore the original file
-    4. show the diff between the original and modified file
-    5. clean up temp files
-    """
     with tempfile.NamedTemporaryFile(
         delete=False
     ) as tmp_original, tempfile.NamedTemporaryFile(delete=False) as tmp_modified:

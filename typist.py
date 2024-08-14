@@ -7,6 +7,8 @@ from print_usage import print_usage
 from retry_last_change import retry_last_change
 from run_test import run_test
 from select_file import select_file
+from show_diff import show_diff
+from show_current_file import show_current_file
 import state
 from state import (
     custom_instructions,
@@ -46,6 +48,12 @@ def main():
         format_command.set(" ".join(sys.argv[2:]))
     elif command in ["diff_cmd", "diff"] and len(sys.argv) > 2:
         diff_command.set(" ".join(sys.argv[2:]))
+    elif command in ["show"]:
+        subcommand = sys.argv[2] if len(sys.argv) > 2 else ""
+        if subcommand == "diff":
+            show_diff()
+        if subcommand == "file":
+            show_current_file()
     else:
         print(f"Unknown command: {command}")
         print_usage()
