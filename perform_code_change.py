@@ -24,10 +24,8 @@ def update_and_load_state(change):
     code_change.set(change)
     change_requests.append(change)
 
-    # Construct the change request string
     change_request = "\n".join(filter(None, [custom_instructions.get(), change]))
 
-    # Expand references in the change request
     change_request = expand_file_references(change_request)
 
     return (
@@ -48,7 +46,6 @@ def perform_code_change(change):
         print(e)
         return
 
-    # Execute the code change workflow
     temp_file = execute_code_change_workflow(
         target_file=target_file,
         code_change=change_request,
@@ -57,5 +54,4 @@ def perform_code_change(change):
         diff_cmd=diff_cmd,
     )
 
-    # Store the path of the temporary file
     temp_file_path.set(temp_file)

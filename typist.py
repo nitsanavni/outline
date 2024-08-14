@@ -9,6 +9,7 @@ from run_test import run_test
 from select_file import select_file
 from show_diff import show_diff
 from show_current_file import show_current_file
+from fancy_prompt import fancy_prompt
 import state
 from state import (
     custom_instructions,
@@ -29,8 +30,11 @@ def main():
 
     if command in ["file", "f"]:
         select_file()
-    elif command in ["change", "c"] and len(sys.argv) > 2:
-        perform_code_change(" ".join(sys.argv[2:]))
+    elif command in ["change", "c"]:
+        if len(sys.argv) > 2:
+            perform_code_change(" ".join(sys.argv[2:]))
+        else:
+            perform_code_change(fancy_prompt("Code change (use '@' for files): "))
     elif command in ["set_test_command", "test_cmd", "cmd", "tc"] and len(sys.argv) > 2:
         test_command.set(" ".join(sys.argv[2:]))
     elif command in ["run_test", "run"]:
