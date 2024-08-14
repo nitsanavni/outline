@@ -27,16 +27,17 @@ def read_file(file_path):
 def make_prompt(file_to_change, change_to_make):
     code = read_file(file_to_change)
 
-    prompt = f"""
-    I need you to modify the following code according to the instructions below. 
-    Write the whole code again with the modifications.
-    Instructions: {change_to_make}
+    prompt = f"""Modify the following code according to the instructions below.
+Write the whole "file to change" code again with the modifications.
 
-    Code:
-    ```
-    {code}
-    ```
-    """
+Instructions:
+{change_to_make}
+
+File to change:
+{file_to_change}
+```
+{code}
+```"""
 
     return prompt
 
