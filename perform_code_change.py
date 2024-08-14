@@ -17,6 +17,18 @@ class FileSelectionError(Exception):
     pass
 
 
+def expand_file_references(change_request):
+    """
+    Expands file references in the change request.
+    Example format:
+    @file
+    @file:4
+    @file:5-7
+    """
+    # Implementation for expanding file references goes here.
+    return change_request  # Placeholder return
+
+
 def update_and_load_state(change):
     target_file = selected_file.get()
     if not target_file:
@@ -25,7 +37,11 @@ def update_and_load_state(change):
     code_change.set(change)
     change_requests.append(change)
 
+    # Construct the change request string
     change_request = "\n".join([s for s in [custom_instructions.get(), change] if s])
+
+    # Expand references in the change request
+    change_request = expand_file_references(change_request)
 
     return (
         target_file,
@@ -45,6 +61,7 @@ def perform_code_change(change):
         print(e)
         return
 
+    # Execute the code change workflow
     temp_file = execute_code_change_workflow(
         target_file=target_file,
         code_change=change_request,
@@ -53,4 +70,5 @@ def perform_code_change(change):
         diff_cmd=diff_cmd,
     )
 
+    # Store the path of the temporary file
     temp_file_path.set(temp_file)

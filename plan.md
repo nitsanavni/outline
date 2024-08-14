@@ -6,6 +6,9 @@ change_requests to be a json file to support multiline change requests
 
 Functionality
 
+- show diff
+- show file
+- show
 - "try harder" / "h" - use gpt-4o
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
