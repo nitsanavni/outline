@@ -12,7 +12,7 @@ def format_code(file, formatter):
 
 def show_diff(file1, file2, diff_cmd=None):
     if diff_cmd:
-        # Replace placeholders in the diff command with the file paths
+        # example: vimdiff {file1} {file2}
         diff_cmd = diff_cmd.replace("{file1}", file1).replace("{file2}", file2)
         subprocess.run(diff_cmd, shell=True)
     else:

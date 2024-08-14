@@ -2,6 +2,8 @@
 
 Core
 
+change_requests to be a json file to support multiline change requests
+
 Functionality
 
 - "try harder" / "h" - use gpt-4o
@@ -13,6 +15,7 @@ UI
 
 - better prompt
   - i - continue from existing instructions
+  -
 - vscode extension
 
 Context Management
@@ -26,8 +29,6 @@ Context Management
 - `@file#O20` - outlined file, numbers of lines is 20
 - vars should be multi-line, especially the custom instructions - mayeb in files
   - use a better prompt, see ideas in `prompt.py`
-
-Find a nice cli diff tool
 
 Allow us to create a new file, not only change existing one
 
