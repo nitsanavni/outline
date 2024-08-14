@@ -30,7 +30,8 @@ def expand_file_references(change_request):
             file_content = lines
 
         # Prepare the replacement text
-        header = f"\n# --- {file_name} ---\n"
+        lines_header = f"(lines {start_line+1}-{end_line+1}) " if start_line else ""
+        header = f"\n# --- {file_name} {lines_header}---\n"
         content = "".join(
             f"{i+1}: {line}"
             for i, line in enumerate(file_content, start=start_line or 0)
