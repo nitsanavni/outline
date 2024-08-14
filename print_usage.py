@@ -11,3 +11,4 @@ def print_usage():
     print("  status (st): Display the current status.")
     print("  format (fmt): Set the formatter command.")
     print("  diff_cmd (diff): Set the diff command.")
+    print("  show: Show current file or diff.")
