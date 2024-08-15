@@ -9,12 +9,23 @@ def get_function_code(file_path, function_name):
     # Parse the file content into an AST
     parsed_ast = ast.parse(file_content)
 
-    # Find the function definition in the AST
+    start_lineno = None
+    end_lineno = None
+
     for node in ast.walk(parsed_ast):
         if isinstance(node, ast.FunctionDef) and node.name == function_name:
-            # Extract the lines of the function
-            start_lineno = node.lineno - 1
+            # Find the line number of the first decorator
+            first_decorator_line = node.lineno
+            for decorator in node.decorator_list:
+                decorator_line = decorator.lineno
+                if decorator_line < first_decorator_line:
+                    first_decorator_line = decorator_line
+
+            # Set the start and end line numbers
+            start_lineno = first_decorator_line - 1
             end_lineno = node.body[-1].lineno
+
+            # Extract the code lines
             lines = file_content.splitlines()[start_lineno:end_lineno]
             return "\n".join(lines)
 

@@ -9,6 +9,7 @@ Functionality
 - `@file.def` - add a function to the context
 - refactorings
   - move to file
+  - rename
 - "try harder" / "h" - use gpt-4o
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
@@ -26,7 +27,6 @@ Context Management
 - support variables `$var`
 - stateful context
 - vars should be multi-line, especially the custom instructions - mayeb in files
-  - use a better prompt, see ideas in `prompt.py`
 
 Allow us to create a new file, not only change existing one
 
