@@ -12,8 +12,9 @@ def select_file_with_fzf():
         return None
 
 
-def select_file():
-    file_selected = select_file_with_fzf()
-    if file_selected is not None:
-        selected_file.set(file_selected)
+def select_file(file=None):
+    if not file:
+        file = select_file_with_fzf()
+    if file is not None:
+        selected_file.set(file)
         code_change.clear()

@@ -1,7 +1,11 @@
 from openai import OpenAI
 
+from debug import debug
+
 
 def prompt_llm(prompt):
+    debug(f"Prompting LLM with:\n{prompt}")
+
     client = OpenAI()
 
     chat_completion = client.chat.completions.create(
@@ -14,4 +18,4 @@ def prompt_llm(prompt):
         model="gpt-4o-mini",
     )
 
-    return chat_completion.choices[0].message.content
+    return debug(chat_completion.choices[0].message.content)

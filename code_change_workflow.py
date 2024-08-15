@@ -48,7 +48,7 @@ def execute_code_change_workflow(
         shutil.copyfile(target_file, tmp_original.name)
 
         new_code = prompt_for_change_and_extract_code(
-            file_to_change=tmp_original.name, change_to_make=code_change
+            file_to_change=target_file, change_to_make=code_change
         )
 
         save(tmp_modified.name, new_code)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 
 from approve_changes import approve_changes
@@ -29,7 +31,10 @@ def main():
     command = sys.argv[1]
 
     if command in ["file", "f"]:
-        select_file()
+        if len(sys.argv) > 2:
+            select_file(sys.argv[2])
+        else:
+            select_file()
     elif command in ["change", "c"]:
         if len(sys.argv) > 2:
             perform_code_change(" ".join(sys.argv[2:]))
@@ -39,8 +44,13 @@ def main():
         test_command.set(" ".join(sys.argv[2:]))
     elif command in ["run_test", "run"]:
         run_test()
-    elif command in ["instructions", "i"] and len(sys.argv) > 2:
-        custom_instructions.set(" ".join(sys.argv[2:]))
+    elif command in ["instructions", "i"]:
+        if len(sys.argv) > 2:
+            custom_instructions.set(" ".join(sys.argv[2:]))
+        else:
+            custom_instructions.set(
+                fancy_prompt("'@' for files\nCustom instructions: ")
+            )
     elif command in ["retry", "r"]:
         retry_last_change()
     elif command in ["approve", "a"]:

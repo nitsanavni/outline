@@ -1,4 +1,5 @@
 from state import test_command
+import sys
 
 
 import subprocess
