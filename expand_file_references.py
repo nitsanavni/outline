@@ -40,13 +40,13 @@ def expand_file_references(change_request):
 
         # Prepare the replacement text
         lines_header = f"(lines {start_line+1}-{end_line+1}) " if start_line else ""
-        header = f"\n# --- {file_name} {lines_header}---\n"
+        header = f"\n### File: `{file_name}` {lines_header}\n"
         content = "".join(
             f"{i+1}: {line}"
             for i, line in enumerate(file_content, start=start_line or 0)
         )
 
-        return header + content
+        return header + "```\n" + content + "```\n"
 
     # Replace all occurrences of the pattern
     expanded_change_request = file_and_line_range_pattern.sub(
