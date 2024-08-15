@@ -5,7 +5,9 @@ from state import code_change, selected_file
 
 def select_file_with_fzf():
     try:
-        return subprocess.check_output(["fzf"], text=True).strip()
+        return subprocess.check_output(
+            ["fzf", "--preview", "clp {}"], text=True
+        ).strip()
     except subprocess.CalledProcessError:
         return None
 

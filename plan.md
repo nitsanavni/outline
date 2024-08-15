@@ -6,33 +6,25 @@ change_requests to be a json file to support multiline change requests
 
 Functionality
 
-- show diff
-- show file
-- show
+- `@file.def` - add a function to the context
+- refactorings
+  - move to file
 - "try harder" / "h" - use gpt-4o
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
   - wrapper could be simple template or could be llm'ed
-- fzf assisted outline, previews, when changing the num of lines
-  `seq 100 | fzf --preview 'python outline.py -r *.py -l {}'`
+- approval process for multi-file changes
+- can prompt return selection range?
 
 UI
 
-- better prompt
-  - i - continue from existing instructions
-  -
 - vscode extension
 
 Context Management
 
 - `@test` - include test results
-- file ref: `@file#L3-14`
-  - `@` - trigger `fzf`
-  - `#L` - select line range
-  - parser / template formatting - unwrap file refs
 - support variables `$var`
 - stateful context
-- `@file#O20` - outlined file, numbers of lines is 20
 - vars should be multi-line, especially the custom instructions - mayeb in files
   - use a better prompt, see ideas in `prompt.py`
 

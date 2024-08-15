@@ -8,4 +8,4 @@ def show_current_file():
     if not file:
         return
 
-    os.system(f"bat {file}")
+    os.system(f"clp {file}")
