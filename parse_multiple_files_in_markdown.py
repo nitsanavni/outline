@@ -1,9 +1,10 @@
 import re
-import sys
+
+from main_decorator import main
 
 
 def parse_markdown(md):
-    file_header_pattern = re.compile(r"^### File: `(.+?)`$")
+    file_header_pattern = re.compile(r"^### File: `(.+?)`")
     inside_code_block = False
     current_file_name = None
     current_code = []
@@ -38,17 +39,13 @@ def parse_markdown(md):
     return result
 
 
-if __name__ == "__main__":
-    # Read the entire input from stdin
-    md = sys.stdin.read()
-
-    # Parse the markdown content
+@main
+def printer(md):
     parsed_files = parse_markdown(md)
 
-    # Print the results
-    for file_name, source in parsed_files:
-        print(f"### File: `{file_name}`")
-        print("```")
-        print(source)
-        print("```")
-        print("")
+    return "\n".join(
+        [
+            f"### File: `{file_name}`\n```{source}\n```"
+            for file_name, source in parsed_files
+        ]
+    )

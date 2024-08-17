@@ -1,4 +1,9 @@
-`@main` decorator
+`@main` decorator - where else is this relevant?
+`@verify`
+
+- we could support diffing parts of files
+  - could be cool
+  - similar to inline approvals
 
 # typist
 
