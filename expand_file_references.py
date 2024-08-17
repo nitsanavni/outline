@@ -1,12 +1,12 @@
 import re
-import sys
 from pathlib import Path
 
 from outline import Outline
+from main_decorator import main
 
 
+@main
 def expand_file_references(change_request):
-    # Improved regex pattern
     file_and_line_range_pattern = re.compile(
         r"@(\S+?)(?::(\d+)(?:-(\d+))?)?(?=\s|$)|(\S+#O)"
     )
@@ -54,12 +54,3 @@ def expand_file_references(change_request):
     )
 
     return expanded_change_request
-
-
-if __name__ == "__main__":
-    # Read from standard input
-    change_request = sys.stdin.read()
-    # Expand file references in the change request
-    expanded_request = expand_file_references(change_request)
-    # Print the expanded change request
-    print(expanded_request)
