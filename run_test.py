@@ -1,10 +1,11 @@
-from state import test_command
 import sys
-
-
 import subprocess
 
+from main_decorator import main
+from state import test_command
 
+
+@main
 def run_test():
     if not test_command.get():
         return
