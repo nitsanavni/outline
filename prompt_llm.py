@@ -22,6 +22,4 @@ def prompt_llm(prompt):
 
 
 if __name__ == "__main__":
-    prompt = sys.stdin.read().strip()
-    response = prompt_llm(prompt)
-    print(response)
+    print(prompt_llm(sys.stdin.read()))
