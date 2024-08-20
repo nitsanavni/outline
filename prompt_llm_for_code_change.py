@@ -3,6 +3,7 @@ import sys
 from prompt_llm import prompt_llm
 
 
+# awk '/```/{flag=!flag; next} flag'
 def extract_code_block(text):
     lines = text.splitlines()
     in_code_block = False

@@ -1,3 +1,19 @@
+show the convo outside the code blocks
+
+chat with llm remains visible
+parts from it can be automatically used
+e.g. shell commands can be run
+named files code blocks can be
+
+1. immediately "approved" -> copied to the target file
+2. "show as diff" -> show the diff (.typistrc config "show as diff by default: true")
+
+`typist exec git status`
+
+## migrate us to lua
+
+- [ ] R&D python-lua interop
+
 `@main` decorator - where else is this relevant?
 `@verify`
 
