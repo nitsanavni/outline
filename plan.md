@@ -10,6 +10,10 @@ named files code blocks can be
 
 `typist exec git status`
 
+prompt iteration workflow
+
+cost estimation
+
 ## migrate us to lua
 
 - [ ] R&D python-lua interop
