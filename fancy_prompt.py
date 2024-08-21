@@ -3,6 +3,8 @@ from prompt_toolkit import prompt
 from prompt_toolkit.key_binding import KeyBindings
 import subprocess
 
+from main_decorator import main
+
 bindings = KeyBindings()
 
 
@@ -45,10 +47,10 @@ def handle_colon(event):
     buffer.insert_text(f":{start_line}-{end_line}")
 
 
+
 def fancy_prompt(prompt_text):
-    return prompt(prompt_text, key_bindings=bindings, multiline=True)
+    return prompt(prompt_text, key_bindings=bindings, multiline=True, )
 
 
 if __name__ == "__main__":
-    answer = fancy_prompt("> ")
-    print(f"You said: {answer}")
+    print(fancy_prompt(""))

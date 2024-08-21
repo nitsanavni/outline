@@ -1,3 +1,15 @@
+# TIL
+
+- `echo "@$(fzf)" | python prompt.py`
+
+# Doing
+
+- approval process for multi-file changes
+  - [x] parser
+  - [x] prompt(change_request)
+  - [ ] open multiple diffs
+
+
 show the convo outside the code blocks
 
 chat with llm remains visible
@@ -13,6 +25,8 @@ named files code blocks can be
 prompt iteration workflow
 
 cost estimation
+
+package us
 
 ## migrate us to lua
 
@@ -41,7 +55,6 @@ Functionality
 - recipes: e.g. lift up conditional
   - could do it by recording recent changes
   - wrapper could be simple template or could be llm'ed
-- approval process for multi-file changes
 - can prompt return selection range?
 
 UI
