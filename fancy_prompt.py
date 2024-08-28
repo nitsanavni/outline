@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from prompt_toolkit import prompt
+from prompt_toolkit.history import FileHistory
 from prompt_toolkit.key_binding import KeyBindings
 import subprocess
 
@@ -48,8 +49,8 @@ def handle_colon(event):
 
 
 
-def fancy_prompt(prompt_text):
-    return prompt(prompt_text, key_bindings=bindings, multiline=True, )
+def fancy_prompt(prompt_text, history_file=".fancy_prompt_history"):
+    return prompt(prompt_text, key_bindings=bindings, multiline=True, history=FileHistory(history_file))
 
 
 if __name__ == "__main__":
