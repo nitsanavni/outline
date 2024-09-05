@@ -4,10 +4,19 @@
 
 # Doing
 
-- approval process for multi-file changes
+- clean up the plan
+
+# todo
+
+- [ ] fzf ignore .gitignore
+- [ ] change_in_files -> support md with code blocks
+  - always annotate opening triple backticks to differentiate from end triple backticks; then we can parse easily
+- [ ] support `$(cmd)` expansion
+
+- [x] approval process for multi-file changes
   - [x] parser
   - [x] prompt(change_request)
-  - [ ] open multiple diffs
+  - [x] open multiple diffs
 
 
 show the convo outside the code blocks

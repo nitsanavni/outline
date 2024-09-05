@@ -16,6 +16,9 @@ def expand_file_references(change_request):
         start_line = match.group(2)
         end_line = match.group(3)
 
+        if not file_name:
+            return match.group(0)
+
         if "#O" in file_name:  # Check for outline references
             outline_filename = file_name[:-2]  # remove #O
             outline = Outline(root_nodes=[outline_filename])
@@ -42,7 +45,7 @@ def expand_file_references(change_request):
         lines_header = f"(lines {start_line+1}-{end_line+1}) " if start_line else ""
         header = f"\n### File: `{file_name}` {lines_header}\n"
         content = "".join(
-            f"{i+1}: {line}"
+            line
             for i, line in enumerate(file_content, start=start_line or 0)
         )
 

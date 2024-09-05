@@ -19,6 +19,7 @@ def main():
     args = parser.parse_args()
 
     change_request = fancy_prompt("", history_file=args.history)
+    print("on it...")
     expanded = expand_file_references(change_request)
     response = prompt_llm_multi_file_response(request=expanded)
     files = parse_markdown(response)

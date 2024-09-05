@@ -5,3 +5,4 @@
 *.changed*
 .typist
 .change_in_files_history
+venv
