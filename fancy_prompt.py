@@ -10,7 +10,9 @@ bindings = KeyBindings()
 
 
 def trigger_fzf():
-    return subprocess.check_output(["fzf"], text=True).strip()
+    git_ls_files = subprocess.check_output(["git", "ls-files"], text=True).strip().splitlines()
+    fzf_output = subprocess.run(["fzf"], input='\n'.join(git_ls_files), text=True, capture_output=True)
+    return fzf_output.stdout.strip()
 
 
 @bindings.add("@")
@@ -29,7 +31,7 @@ def shell(command):
 def fzf_to_select_lines(file):
     start_line = int(shell(f"cat -n {file} | tac | fzf | cut -f1"))
     end_line = int(
-        shell(f"cat -n {file} | tail -n +{start_line} | tac |  fzf | cut -f1")
+        shell(f"cat -n {file} | tail -n +{start_line} | tac | fzf | cut -f1")
     )
 
     return start_line, end_line
@@ -46,7 +48,6 @@ def handle_colon(event):
     the_file = current_text.split()[-1][1:]
     start_line, end_line = fzf_to_select_lines(the_file)
     buffer.insert_text(f":{start_line}-{end_line}")
-
 
 
 def fancy_prompt(prompt_text, history_file=".fancy_prompt_history"):
