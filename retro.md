@@ -12,6 +12,8 @@ Sarosh
 - Learned a lot of commmands
 - Differences when working with others - communication and lack of control 
 - Overall, really good; learned more
+- Nonverbal communication - good to see
+- Observed how we all are communicating with each other; want to communicate more like others in the ensemble
 
 # Retro 2
 
