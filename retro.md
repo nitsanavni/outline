@@ -1,3 +1,18 @@
+# Retro 3
+
+Joel
+- really getting stuck. makes Joel realise that using GUI environment, need someone who knows commands else takes a lot of time
+- just trying to get something working took a lot of time
+- glad we tried it but we spent more time on environment and doing simple things than to actually to TDD
+- preference in future session would be to do red green refactor iterations and can use something lighter weight like cyber dojo
+
+Sarosh
+- Need more documentation - takes a lot of time when things aren't documented
+- Setting up the environment always takes a lot of time, part of learning
+- Learned a lot of commmands
+- Differences when working with others - communication and lack of control 
+- Overall, really good; learned more
+
 # Retro 2
 
 Joel
