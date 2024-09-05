@@ -10,7 +10,7 @@ bindings = KeyBindings()
 
 
 def trigger_fzf():
-    git_ls_files = subprocess.check_output(["git", "ls-files"], text=True).strip().splitlines()
+    git_ls_files = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard"], text=True).strip().splitlines()
     fzf_output = subprocess.run(["fzf"], input='\n'.join(git_ls_files), text=True, capture_output=True)
     return fzf_output.stdout.strip()
 
